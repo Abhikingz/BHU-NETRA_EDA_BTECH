@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CommandAuthorization",
+  "type": "object",
+  "properties": {
+    "command_authorization_id": { "type": "string" },
+    "satellite_id": { "type": "string" },
+    "target_pass_id": { "type": "string" },
+    "telecommand": {
+      "type": "object",
+      "properties": {
+        "opcode": { "type": "string" },
+        "parameters": { "type": "object" }
+      },
+      "required": ["opcode"]
+    },
+    "sign_off_chain": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stage": { "type": "integer" },
+          "role": { "type": "string" },
+          "user_id": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "status": { "type": "string" },
+          "hsm_key_id": { "type": "string" },
+          "cryptographic_signature": { "type": "string" }
+        },
+        "required": ["stage", "role", "user_id", "status"]
+      }
+    },
+    "ccsds_framed_hex": { "type": "string" },
+    "uplink_execution_status": { "type": "string" }
+  },
+  "required": ["command_authorization_id", "satellite_id", "telecommand", "sign_off_chain", "uplink_execution_status"]
+}

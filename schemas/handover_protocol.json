@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GroundStationHandoverProtocol",
+  "type": "object",
+  "properties": {
+    "handover_id": { "type": "string" },
+    "satellite_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "receding_ground_station": {
+      "type": "object",
+      "properties": {
+        "gs_id": { "type": "string" },
+        "current_elevation_deg": { "type": "number" },
+        "rf_link_status": { "type": "string" }
+      },
+      "required": ["gs_id", "rf_link_status"]
+    },
+    "approaching_ground_station": {
+      "type": "object",
+      "properties": {
+        "gs_id": { "type": "string" },
+        "current_elevation_deg": { "type": "number" },
+        "rf_link_status": { "type": "string" }
+      },
+      "required": ["gs_id", "rf_link_status"]
+    },
+    "handover_phase": { "type": "string" },
+    "telemetry_stream_continuity": { "type": "string" }
+  },
+  "required": ["handover_id", "satellite_id", "receding_ground_station", "approaching_ground_station", "handover_phase"]
+}

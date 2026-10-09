@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TelemetryEvent",
+  "type": "object",
+  "properties": {
+    "event_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "satellite_id": { "type": "string" },
+    "pass_id": { "type": "string" },
+    "ground_station_id": { "type": "string" },
+    "raw_cadu_sequence": { "type": "integer" },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "electrical": {
+          "type": "object",
+          "properties": {
+            "bus_voltage_v": { "type": "number" },
+            "solar_array_current_a": { "type": "number" },
+            "battery_soc_pct": { "type": "number" }
+          },
+          "required": ["bus_voltage_v", "battery_soc_pct"]
+        },
+        "thermal": {
+          "type": "object",
+          "properties": {
+            "payload_camera_temp_c": { "type": "number" },
+            "battery_pack_temp_c": { "type": "number" }
+          }
+        },
+        "aocs": {
+          "type": "object",
+          "properties": {
+            "quaternion": { "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4 }
+          }
+        }
+      },
+      "required": ["electrical", "thermal", "aocs"]
+    },
+    "anomaly_status": {
+      "type": "object",
+      "properties": {
+        "has_anomaly": { "type": "boolean" },
+        "severity": { "type": "string" }
+      },
+      "required": ["has_anomaly", "severity"]
+    }
+  },
+  "required": ["event_id", "timestamp", "satellite_id", "parameters", "anomaly_status"]
+}

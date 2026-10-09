@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DisseminationEntitlementDelivery",
+  "type": "object",
+  "properties": {
+    "delivery_id": { "type": "string" },
+    "recipient_department": { "type": "string" },
+    "recipient_network": { "type": "string" },
+    "clearance_level": { "type": "string" },
+    "product": {
+      "type": "object",
+      "properties": {
+        "product_id": { "type": "string" },
+        "stac_item_url": { "type": "string" },
+        "spatial_resolution_meters": { "type": "number" },
+        "format": { "type": "string" },
+        "storage_uri": { "type": "string" },
+        "checksum_sha256": { "type": "string" }
+      },
+      "required": ["product_id", "storage_uri", "checksum_sha256"]
+    },
+    "entitlement_policy": {
+      "type": "object",
+      "properties": {
+        "spatial_watermark_applied": { "type": "boolean" },
+        "classification_mask_applied": { "type": "boolean" },
+        "redacted_sensitive_zones": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["spatial_watermark_applied", "classification_mask_applied"]
+    },
+    "delivered_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["delivery_id", "recipient_department", "product", "entitlement_policy", "delivered_at"]
+}

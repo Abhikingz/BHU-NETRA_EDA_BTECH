@@ -1,0 +1,183 @@
+openapi: 3.0.3
+info:
+  title: BHU-NETRA Satellite Ground Segment & Mission Control API
+  description: National satellite ground-segment platform API for TT&C, Mission Planning, Telemetry, Command Enclave, and Data Dissemination.
+  version: 1.0.0
+servers:
+  - url: https://c2.bhu-netra.gov.in/api/v1
+    description: Secure On-Prem Core Operations Gateway
+  - url: https://data.bhu-netra.gov.in/api/v1
+    description: Cloud Data Dissemination Gateway
+paths:
+  /planning/passes/schedule:
+    post:
+      summary: Generate Satellite Pass Schedule
+      operationId: generatePassSchedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PassScheduleRequest'
+      responses:
+        '200':
+          description: Schedule successfully generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PassScheduleResponse'
+  /planning/tasking/emergency:
+    post:
+      summary: Submit Emergency Tasking Override
+      operationId: submitEmergencyTasking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmergencyTaskingRequest'
+      responses:
+        '202':
+          description: Tasking accepted and schedule preempted
+  /commands/authorizations/initiate:
+    post:
+      summary: Initiate Multi-Sign-Off Command Authorization
+      operationId: initiateCommandAuthorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommandInitiateRequest'
+      responses:
+        '201':
+          description: Command authorization request created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandInitiateResponse'
+  /commands/authorizations/{cmd_id}/sign:
+    post:
+      summary: Sign and Approve Telecommand with HSM Key
+      operationId: signCommandAuthorization
+      parameters:
+        - name: cmd_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommandSignRequest'
+      responses:
+        '200':
+          description: Command fully signed and ready for uplink
+  /handover/initiate:
+    post:
+      summary: Coordinate Mid-Pass Ground Station Handover
+      operationId: initiateHandover
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HandoverRequest'
+      responses:
+        '200':
+          description: Handover executed seamlessly
+  /catalog/products/search:
+    post:
+      summary: Search SpatioTemporal Asset Catalog (STAC API)
+      operationId: searchCatalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/STACSearchRequest'
+      responses:
+        '200':
+          description: Matching GeoTIFF STAC items returned
+components:
+  schemas:
+    PassScheduleRequest:
+      type: object
+      properties:
+        planning_window_start:
+          type: string
+          format: date-time
+        planning_window_end:
+          type: string
+          format: date-time
+        satellites:
+          type: array
+          items:
+            type: string
+        ground_stations:
+          type: array
+          items:
+            type: string
+    PassScheduleResponse:
+      type: object
+      properties:
+        schedule_id:
+          type: string
+        status:
+          type: string
+        total_passes:
+          type: integer
+    EmergencyTaskingRequest:
+      type: object
+      properties:
+        requestor:
+          type: string
+        priority_level:
+          type: string
+        event_type:
+          type: string
+    CommandInitiateRequest:
+      type: object
+      properties:
+        satellite_id:
+          type: string
+        command_opcode:
+          type: string
+        operator_id:
+          type: string
+    CommandInitiateResponse:
+      type: object
+      properties:
+        command_authorization_id:
+          type: string
+        status:
+          type: string
+    CommandSignRequest:
+      type: object
+      properties:
+        approver_role:
+          type: string
+        approver_id:
+          type: string
+        hsm_token_signature:
+          type: string
+    HandoverRequest:
+      type: object
+      properties:
+        satellite_id:
+          type: string
+        source_gs_id:
+          type: string
+        target_gs_id:
+          type: string
+    STACSearchRequest:
+      type: object
+      properties:
+        bbox:
+          type: array
+          items:
+            type: number
+        datetime:
+          type: string

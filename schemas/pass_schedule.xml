@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://bhu-netra.gov.in/schemas/planning/v1"
+           xmlns="http://bhu-netra.gov.in/schemas/planning/v1"
+           elementFormDefault="qualified">
+
+    <xs:element name="SatellitePassSchedule">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="PlanningWindow">
+                    <xs:complexType>
+                        <xs:attribute name="start" type="xs:dateTime" use="required"/>
+                        <xs:attribute name="end" type="xs:dateTime" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="PassDetails" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Satellite">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string" use="required"/>
+                                    <xs:attribute name="noradId" type="xs:integer" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="GroundStation">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="xs:string" use="required"/>
+                                    <xs:attribute name="lat" type="xs:double" use="required"/>
+                                    <xs:attribute name="lon" type="xs:double" use="required"/>
+                                    <xs:attribute name="altMeters" type="xs:double" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="PassGeometry">
+                                <xs:complexType>
+                                    <xs:attribute name="aos" type="xs:dateTime" use="required"/>
+                                    <xs:attribute name="los" type="xs:dateTime" use="required"/>
+                                    <xs:attribute name="maxElevationDeg" type="xs:double" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="OperationMode" type="xs:string"/>
+                            <xs:element name="TargetArea" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="BoundingBox">
+                                            <xs:complexType>
+                                                <xs:attribute name="minLon" type="xs:double" use="required"/>
+                                                <xs:attribute name="minLat" type="xs:double" use="required"/>
+                                                <xs:attribute name="maxLon" type="xs:double" use="required"/>
+                                                <xs:attribute name="maxLat" type="xs:double" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="name" type="xs:string"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="passId" type="xs:string" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="scheduleId" type="xs:string" use="required"/>
+            <xs:attribute name="generatedAt" type="xs:dateTime" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

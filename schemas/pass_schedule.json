@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SatellitePassSchedule",
+  "type": "object",
+  "properties": {
+    "schedule_id": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "planning_window": {
+      "type": "object",
+      "properties": {
+        "start": { "type": "string", "format": "date-time" },
+        "end": { "type": "string", "format": "date-time" }
+      },
+      "required": ["start", "end"]
+    },
+    "passes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "pass_id": { "type": "string" },
+          "satellite_id": { "type": "string" },
+          "ground_station_id": { "type": "string" },
+          "aos_time": { "type": "string", "format": "date-time" },
+          "los_time": { "type": "string", "format": "date-time" },
+          "max_elevation_deg": { "type": "number" },
+          "operation_mode": { "type": "string" }
+        },
+        "required": ["pass_id", "satellite_id", "ground_station_id", "aos_time", "los_time"]
+      }
+    }
+  },
+  "required": ["schedule_id", "generated_at", "planning_window", "passes"]
+}
