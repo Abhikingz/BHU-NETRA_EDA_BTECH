@@ -2,5 +2,4 @@ __pycache__/
 *.pyc
 .DS_Store
 *.log
-
-*.pdf
+BHU_NETRA_Enterprise_Architecture_Report.pdf
